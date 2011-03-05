@@ -10,7 +10,8 @@ module Riddle
         :html_index_attrs, :html_remove_elements, :preopen, :ondisk_dict,
         :inplace_enable, :inplace_hit_gap, :inplace_docinfo_gap,
         :inplace_reloc_factor, :inplace_write_factor, :index_exact_words,
-        :overshort_step, :stopwords_step, :hitless_words]
+        :overshort_step, :stopwords_step, :hitless_words, :chinese_dictionary]
+
       
       attr_accessor :name, :parent, :type, :sources, :path, :docinfo, :mlock,
         :morphologies, :min_stemming_len, :stopword_files, :wordform_files,
@@ -22,7 +23,8 @@ module Riddle
         :html_remove_element_tags, :preopen, :ondisk_dict, :inplace_enable,
         :inplace_hit_gap, :inplace_docinfo_gap, :inplace_reloc_factor,
         :inplace_write_factor, :index_exact_words, :overshort_step,
-        :stopwords_step, :hitless_words
+        :stopwords_step, :hitless_words, :chinese_dictionary
+
       
       def initialize(name, *sources)
         @name                     = name
