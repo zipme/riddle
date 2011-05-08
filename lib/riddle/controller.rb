@@ -12,7 +12,7 @@ module Riddle
     end
     
     def sphinx_version
-      `#{indexer} 2>&1`[/^Sphinx (\d+\.\d+(\.\d+|(\-id64)?\-beta))/, 1]
+      `#{indexer} 2>&1`[/^Sphinx (\d+\.\d+(\.\d+|(?:-dev|(\-id64)?\-beta)))/, 1]
     rescue
       nil
     end
@@ -28,6 +28,7 @@ module Riddle
     
     def start
       return if running?
+      check_for_configuration_file
       
       cmd = "#{searchd} --pidfile --config \"#{@path}\""
       
@@ -46,6 +47,7 @@ module Riddle
     
     def stop
       return true unless running?
+      check_for_configuration_file
       
       stop_flag = 'stopwait'
       stop_flag = 'stop' if Riddle.loaded_version.split('.').first == '0'
@@ -82,6 +84,11 @@ module Riddle
     
     def searchd
       "#{bin_path}#{searchd_binary_name}"
+    end
+    
+    def check_for_configuration_file
+      return if File.exist?(@path)
+      raise "Configuration file '#{@path}' does not exist"
     end
   end
 end
