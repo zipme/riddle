@@ -1,12 +1,23 @@
+require 'thread'
 require 'socket'
 require 'timeout'
 
 module Riddle #:nodoc:
   @@mutex          = Mutex.new
   @@escape_pattern = /[\(\)\|\-!@~"&\/]/
+  @@use_encoding   = defined?(::Encoding) &&
+                     ::Encoding.respond_to?(:default_external)
   
   class ConnectionError < StandardError #:nodoc:
     #
+  end
+
+  def self.encode(data, encoding = ::Encoding.default_external)
+    if @@use_encoding
+      data.force_encoding(encoding)
+    else
+      data
+    end
   end
   
   def self.mutex
@@ -51,12 +62,14 @@ lines after "require 'riddle'" to avoid this warning.
 
     }
   end
+
 end
 
 require 'riddle/auto_version'
 require 'riddle/client'
 require 'riddle/configuration'
 require 'riddle/controller'
+require 'riddle/query'
 
 Riddle.loaded_version = nil
 Riddle::AutoVersion.configure
